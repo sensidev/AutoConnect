@@ -523,8 +523,18 @@ bool AutoConnect::_classifyHandle(HTTPMethod method, String uri) {
   _uri = String();
 
   // Create the page dynamically
-  if ((_currentPageElement = _setupPage(uri)) != nullptr) {
-    _uri = String(uri);
+
+// Trap the crash of String with the 0.9.3.
+//  if ((_currentPageElement = _setupPage(uri)) != nullptr) {
+
+  char buf[64];
+  uri.toCharArray(buf, 64);
+  String __uri = String(buf);
+  AC_DBG("__uri:%s\n ", __uri.c_str());
+  _currentPageElement = _setupPage(__uri);
+  AC_DBG("PageElement:%p\n", _currentPageElement);
+  if (_currentPageElement != nullptr) {
+    _uri = __uri;
     _responsePage->addElement(*_currentPageElement);
   }
   _responsePage->setUri(_uri.c_str());

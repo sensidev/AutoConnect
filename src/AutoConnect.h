@@ -25,7 +25,7 @@ extern "C" {
 #include "AutoConnectCredential.h"
 
 // Uncomment the following AC_DEBUG to enable debug output.
-//#define AC_DEBUG
+#define AC_DEBUG
 
 // Debug output destination can be defined externally with AC_DEBUG_PORT
 #ifndef AC_DEBUG_PORT
