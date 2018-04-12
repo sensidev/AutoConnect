@@ -936,6 +936,8 @@ String AutoConnect::_token_UPTIME(PageArgument& args) {
  *  @retval false Requested uri is not defined.
  */
 PageElement* AutoConnect::_setupPage(String uri) {
+  // AutoConnect crash measures
+  Serial.printf("%s\n", _PAGE_STAT);
   PageElement *elm = new PageElement();
 
   // Build the elements of current requested page.
