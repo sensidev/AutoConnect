@@ -19,7 +19,7 @@ install:
   - arduino --board $BD --save-prefs
   - arduino --pref "compiler.warning_level=all" --save-prefs
 #  - arduino --install-library "PageBuilder"
-  - git clone https://github.com/Hieromon/PageBuilder /usr/local/share/arduino/libraries/PageBuilder
+  - git clone -b measures/AutoConnect_crash https://github.com/Hieromon/PageBuilder /usr/local/share/arduino/libraries/PageBuilder
   - arduino --install-library "PubSubClient"
 script:
  - arduino --verify --board $BD $PWD/examples/Credential/Credential.ino
