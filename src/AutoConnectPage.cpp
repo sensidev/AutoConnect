@@ -918,7 +918,7 @@ String AutoConnect::_token_OPEN_SSID(PageArgument& args) {
   }
 
   if (ssidList.length() == 0) {
-    ssidList = String(PSTR("<p><b>No credential saved.</b></p>"));
+    ssidList = String(F("<p><b>No credential saved.</b></p>"));
   }
   return ssidList;
 }
@@ -936,8 +936,6 @@ String AutoConnect::_token_UPTIME(PageArgument& args) {
  *  @retval false Requested uri is not defined.
  */
 PageElement* AutoConnect::_setupPage(String uri) {
-  // AutoConnect crash measures
-  Serial.printf("%s\n", _PAGE_STAT);
   PageElement *elm = new PageElement();
 
   // Build the elements of current requested page.
