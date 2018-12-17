@@ -512,15 +512,16 @@ String AutoConnect::_invokeResult(PageArgument& args) {
  */
 bool AutoConnect::_classifyHandle(HTTPMethod method, String uri) {
   AC_DBG("%s%s\n", _webServer->hostHeader().c_str(), uri.c_str());
-  PageElementVT& elm = _responsePage->element();
-
+//  PageElementVT& elm = _responsePage->element();
+//
   if (uri == _uri) {
-    AC_DBG("%s exists, PageBuilder uri:%s\n", _uri.c_str(), _responsePage->uri());
-    AC_DBG("Elements:%d\n", elm.size());
-    for (uint8_t i = 0; i < elm.size(); i++) {
-      PageElement element = elm[i].get();
-      AC_DBG("Mold(%d):%s\n", i, element.mold());
-    }
+    // AC_DBG("%s exists, PageBuilder uri:%s\n", _uri.c_str(), _responsePage->uri());
+    // AC_DBG("Elements:%d\n", elm.size());
+    // for (uint8_t i = 0; i < elm.size(); i++) {
+    //   PageElement element = elm[i].get();
+    //   AC_DBG("Mold(%d):%s\n", i, element.mold());
+    // }
+    AC_DBG("%s already allocated\n", _uri.c_str());
     return true;  // The response page already exists.
   }
 
@@ -532,32 +533,38 @@ bool AutoConnect::_classifyHandle(HTTPMethod method, String uri) {
 
   // Create the page dynamically
 
-// Trap the crash of String with the 0.9.3.
-//  if ((_currentPageElement = _setupPage(uri)) != nullptr) {
+  if ((_currentPageElement = _setupPage(uri)) != nullptr) {
 
-  char buf[64];
-  uri.toCharArray(buf, 64);
-  String __uri = String(buf);
-  AC_DBG("__uri:%s\n ", __uri.c_str());
-  _currentPageElement = _setupPage(__uri);
-  AC_DBG("PageElement:%p\n", _currentPageElement);
-  if (_currentPageElement != nullptr) {
-    AC_DBG("Mold:%s\n", _currentPageElement->mold());
-    TokenVT tokens = _currentPageElement->source();
-    for (uint8_t i = 0; i < tokens.size(); i++) {
-      AC_DBG("Token(%d):%s\n", i, tokens[i]._token.c_str());
-    }
-    _uri = __uri;
+// Trap the crash of String with the 0.9.3.
+  // char buf[64];
+  // uri.toCharArray(buf, 64);
+  // String __uri = String(buf);
+  // AC_DBG("__uri:%s\n ", __uri.c_str());
+  // _currentPageElement = _setupPage(__uri);
+  // AC_DBG("PageElement:%p\n", _currentPageElement);
+  // if (_currentPageElement != nullptr) {
+  //   AC_DBG("Mold:%s\n", _currentPageElement->mold());
+  //   TokenVT tokens = _currentPageElement->source();
+  //   for (uint8_t i = 0; i < tokens.size(); i++) {
+  //     AC_DBG("Token(%d):%s\n", i, tokens[i]._token.c_str());
+  //   }
+  //   _uri = __uri;
+  //   _responsePage->addElement(*_currentPageElement);
+  // }
+  // _responsePage->setUri(_uri.c_str());
+  // AC_DBG("Page[%s] allocated\n", _responsePage->uri());
+  // elm = _responsePage->element();
+  // AC_DBG("After elements:%d\n", elm.size());
+  // for (uint8_t i = 0; i < elm.size(); i++) {
+  //   PageElement element = elm[i].get();
+  //   AC_DBG("After mold(%d):%s\n", i, element.mold());
+  // }
+
+    _uri = String(uri);
     _responsePage->addElement(*_currentPageElement);
   }
   _responsePage->setUri(_uri.c_str());
   AC_DBG("Page[%s] allocated\n", _responsePage->uri());
-  elm = _responsePage->element();
-  AC_DBG("After elements:%d\n", elm.size());
-  for (uint8_t i = 0; i < elm.size(); i++) {
-    PageElement element = elm[i].get();
-    AC_DBG("After mold(%d):%s\n", i, element.mold());
-  }
 
   return _currentPageElement != nullptr ? true : false;
 }

@@ -16,7 +16,7 @@ extern "C" {
 }
 
 /**< Basic CSS common to all pages */
-const char AutoConnect::_CSS_BASE[] = {
+const char AutoConnect::_CSS_BASE[] PROGMEM = {
   "html{"
   "font-family:Helvetica,Arial,sans-serif;"
   "font-size:16px;"
@@ -87,7 +87,7 @@ const char AutoConnect::_CSS_BASE[] = {
 };
 
 /**< non-marked list for UL */
-const char AutoConnect::_CSS_UL[] = {
+const char AutoConnect::_CSS_UL[] PROGMEM = {
   "ul.noorder{"
   "padding:0;"
   "list-style:none;"
@@ -101,7 +101,7 @@ const char AutoConnect::_CSS_UL[] = {
 };
 
 /**< Image icon for inline expansion, the lock mark. */
-const char AutoConnect::_CSS_ICON_LOCK[] = {
+const char AutoConnect::_CSS_ICON_LOCK[] PROGMEM = {
   ".img-lock{"
   "display:inline-block;"
   "width:24px;"
@@ -113,7 +113,7 @@ const char AutoConnect::_CSS_ICON_LOCK[] = {
 };
 
 /**< INPUT button and submit style */
-const char AutoConnect::_CSS_INPUT_BUTTON[] = {
+const char AutoConnect::_CSS_INPUT_BUTTON[] PROGMEM = {
   "input[type=\"button\"],input[type=\"submit\"]{"
   "padding:8px 30px;"
   "font-weight:bold;"
@@ -143,7 +143,7 @@ const char AutoConnect::_CSS_INPUT_BUTTON[] = {
 };
 
 /**< INPUT text style */
-const char AutoConnect::_CSS_INPUT_TEXT[] = {
+const char AutoConnect::_CSS_INPUT_TEXT[] PROGMEM = {
   "input[type=\"text\"], input[type=\"password\"]{"
   "background-color:#fff;"
   "padding:10px;"
@@ -191,7 +191,7 @@ const char AutoConnect::_CSS_INPUT_TEXT[] = {
 };
 
 /**< TABLE style */
-const char AutoConnect::_CSS_TABLE[] = {
+const char AutoConnect::_CSS_TABLE[] PROGMEM = {
   "table{"
   "border-collapse:collapse;"
   "border-spacing:0;"
@@ -246,7 +246,7 @@ const char AutoConnect::_CSS_TABLE[] = {
 
 /**< Common menu bar. This style quotes LuxBar. */
 /**< balzss/luxbar is licensed under the MIT License https://github.com/balzss/luxbar */
-const char AutoConnect::_CSS_LUXBAR[] = {
+const char AutoConnect::_CSS_LUXBAR[] PROGMEM = {
   ".luxbar-fixed{"
     "width:100%;"
     "position:fixed;"
@@ -434,7 +434,7 @@ const char AutoConnect::_CSS_LUXBAR[] = {
 };
 
 /**< Common html document header. */
-const char AutoConnect::_ELM_HTML_HEAD[] = {
+const char AutoConnect::_ELM_HTML_HEAD[] PROGMEM = {
   "<!DOCTYPE html>"
   "<html>"
   "<head>"
@@ -442,7 +442,7 @@ const char AutoConnect::_ELM_HTML_HEAD[] = {
 };
 
 /**< LuxBar menu element. */
-const char  AutoConnect::_ELM_MENU[]  = {
+const char  AutoConnect::_ELM_MENU[] PROGMEM = {
   "<header id=\"luxbar\" class=\"luxbar-fixed\">"
   "<input type=\"checkbox\" class=\"luxbar-checkbox\" id=\"luxbar-checkbox\"/>"
   "<div class=\"luxbar-menu luxbar-menu-right luxbar-menu-material-bluegrey\">"
@@ -476,7 +476,7 @@ const char  AutoConnect::_PAGE_404[] = {
 };
 
 /**< The page that started the reset. */
-const char  AutoConnect::_PAGE_RESETTING[] = {
+const char  AutoConnect::_PAGE_RESETTING[] PROGMEM = {
   "{{HEAD}}"
   "<meta http-equiv=\"refresh\" content=\"{{UPTIME}};URL=" AUTOCONNECT_URI "\">"
   "<title>AutoConnect resetting</title>"
@@ -488,7 +488,7 @@ const char  AutoConnect::_PAGE_RESETTING[] = {
 };
 
 /**< AutoConnect portal page. */
-const char  AutoConnect::_PAGE_STAT[] = {
+const char  AutoConnect::_PAGE_STAT[] PROGMEM = {
   "{{HEAD}}"
   "<title>AutoConnect statistics</title>"
   "<style type=\"text/css\">"
@@ -568,7 +568,7 @@ const char  AutoConnect::_PAGE_STAT[] = {
 };
 
 /**< A page that specifies the new configuration. */
-const char  AutoConnect::_PAGE_CONFIGNEW[] = {
+const char  AutoConnect::_PAGE_CONFIGNEW[] PROGMEM = {
   "{{HEAD}}"
   "<title>AutoConnect config</title>"
   "<style type=\"text/css\">"
@@ -606,7 +606,7 @@ const char  AutoConnect::_PAGE_CONFIGNEW[] = {
 };
 
 /**< A page that reads stored authentication information and starts connection. */
-const char  AutoConnect::_PAGE_OPENCREDT[] = {
+const char  AutoConnect::_PAGE_OPENCREDT[] PROGMEM = {
   "{{HEAD}}"
   "<title>AutoConnect credentials</title>"
   "<style type=\"text/css\">"
@@ -629,7 +629,7 @@ const char  AutoConnect::_PAGE_OPENCREDT[] = {
 };
 
 /**< A page announcing that a connection has been established. */
-const char  AutoConnect::_PAGE_SUCCESS[] = {
+const char  AutoConnect::_PAGE_SUCCESS[] PROGMEM = {
   "{{HEAD}}"
   "<title>AutoConnect statistics</title>"
   "<style type=\"text/css\">"
@@ -679,7 +679,7 @@ const char  AutoConnect::_PAGE_SUCCESS[] = {
   "</html>"
 };
  /**< A response page for connection failed. */
-const char  AutoConnect::_PAGE_FAIL[] = {
+const char  AutoConnect::_PAGE_FAIL[] PROGMEM = {
   "{{HEAD}}"
   "<title>AutoConnect statistics</title>"
   "<style type=\"text/css\">"
@@ -707,7 +707,7 @@ const char  AutoConnect::_PAGE_FAIL[] = {
 };
 
 /**< A response page for disconnected from the AP. */
-const char  AutoConnect::_PAGE_DISCONN[] = {
+const char  AutoConnect::_PAGE_DISCONN[] PROGMEM = {
   "{{DISCONNECT}}"
   "{{HEAD}}"
   "<title>AutoConnect disconnected</title>"
@@ -943,112 +943,112 @@ PageElement* AutoConnect::_setupPage(String uri) {
 
     // Setup /auto
     elm->setMold(_PAGE_STAT);
-    elm->addToken("HEAD", std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
-    elm->addToken("CSS_BASE", std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
-    elm->addToken("CSS_TABLE", std::bind(&AutoConnect::_token_CSS_TABLE, this, std::placeholders::_1));
-    elm->addToken("CSS_LUXBAR", std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
-    elm->addToken("MENU", std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
-    elm->addToken("ESTAB_SSID", std::bind(&AutoConnect::_token_ESTAB_SSID, this, std::placeholders::_1));
-    elm->addToken("WIFI_MODE", std::bind(&AutoConnect::_token_WIFI_MODE, this, std::placeholders::_1));
-    elm->addToken("WIFI_STATUS", std::bind(&AutoConnect::_token_WIFI_STATUS, this, std::placeholders::_1));
-    elm->addToken("LOCAL_IP", std::bind(&AutoConnect::_token_LOCAL_IP, this, std::placeholders::_1));
-    elm->addToken("SOFTAP_IP", std::bind(&AutoConnect::_token_SOFTAP_IP, this, std::placeholders::_1));
-    elm->addToken("GATEWAY", std::bind(&AutoConnect::_token_GATEWAY, this, std::placeholders::_1));
-    elm->addToken("NETMASK", std::bind(&AutoConnect::_token_NETMASK, this, std::placeholders::_1));
-    elm->addToken("AP_MAC", std::bind(&AutoConnect::_token_AP_MAC, this, std::placeholders::_1));
-    elm->addToken("STA_MAC", std::bind(&AutoConnect::_token_STA_MAC, this, std::placeholders::_1));
-    elm->addToken("CHANNEL", std::bind(&AutoConnect::_token_CHANNEL, this, std::placeholders::_1));
-    elm->addToken("DBM", std::bind(&AutoConnect::_token_DBM, this, std::placeholders::_1));
-    elm->addToken("CPU_FREQ", std::bind(&AutoConnect::_token_CPU_FREQ, this, std::placeholders::_1));
-    elm->addToken("FLASH_SIZE", std::bind(&AutoConnect::_token_FLASH_SIZE, this, std::placeholders::_1));
-    elm->addToken("CHIP_ID", std::bind(&AutoConnect::_token_CHIP_ID, this, std::placeholders::_1));
-    elm->addToken("FREE_HEAP", std::bind(&AutoConnect::_token_FREE_HEAP, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("HEAD")), std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_BASE")), std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_TABLE")), std::bind(&AutoConnect::_token_CSS_TABLE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_LUXBAR")), std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("MENU")), std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("ESTAB_SSID")), std::bind(&AutoConnect::_token_ESTAB_SSID, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("WIFI_MODE")), std::bind(&AutoConnect::_token_WIFI_MODE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("WIFI_STATUS")), std::bind(&AutoConnect::_token_WIFI_STATUS, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("LOCAL_IP")), std::bind(&AutoConnect::_token_LOCAL_IP, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("SOFTAP_IP")), std::bind(&AutoConnect::_token_SOFTAP_IP, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("GATEWAY")), std::bind(&AutoConnect::_token_GATEWAY, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("NETMASK")), std::bind(&AutoConnect::_token_NETMASK, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("AP_MAC")), std::bind(&AutoConnect::_token_AP_MAC, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("STA_MAC")), std::bind(&AutoConnect::_token_STA_MAC, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CHANNEL")), std::bind(&AutoConnect::_token_CHANNEL, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("DBM")), std::bind(&AutoConnect::_token_DBM, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CPU_FREQ")), std::bind(&AutoConnect::_token_CPU_FREQ, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("FLASH_SIZE")), std::bind(&AutoConnect::_token_FLASH_SIZE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CHIP_ID")), std::bind(&AutoConnect::_token_CHIP_ID, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("FREE_HEAP")), std::bind(&AutoConnect::_token_FREE_HEAP, this, std::placeholders::_1));
   }
   else if (uri == String(AUTOCONNECT_URI_CONFIG)) {
 
     // Setup /auto/config
     elm->setMold(_PAGE_CONFIGNEW);
-    elm->addToken("HEAD", std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
-    elm->addToken("CSS_BASE", std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
-    elm->addToken("CSS_UL", std::bind(&AutoConnect::_token_CSS_UL, this, std::placeholders::_1));
-    elm->addToken("CSS_ICON_LOCK", std::bind(&AutoConnect::_token_CSS_ICON_LOCK, this, std::placeholders::_1));
-    elm->addToken("CSS_INPUT_BUTTON", std::bind(&AutoConnect::_token_CSS_INPUT_BUTTON, this, std::placeholders::_1));
-    elm->addToken("CSS_INPUT_TEXT", std::bind(&AutoConnect::_token_CSS_INPUT_TEXT, this, std::placeholders::_1));
-    elm->addToken("CSS_LUXBAR", std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
-    elm->addToken("MENU", std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
-    elm->addToken("LIST_SSID", std::bind(&AutoConnect::_token_LIST_SSID, this, std::placeholders::_1));
-    elm->addToken("HIDDEN_COUNT", std::bind(&AutoConnect::_token_HIDDEN_COUNT, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("HEAD")), std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_BASE")), std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_UL")), std::bind(&AutoConnect::_token_CSS_UL, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_ICON_LOCK")), std::bind(&AutoConnect::_token_CSS_ICON_LOCK, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_INPUT_BUTTON")), std::bind(&AutoConnect::_token_CSS_INPUT_BUTTON, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_INPUT_TEXT")), std::bind(&AutoConnect::_token_CSS_INPUT_TEXT, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_LUXBAR")), std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("MENU")), std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("LIST_SSID")), std::bind(&AutoConnect::_token_LIST_SSID, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("HIDDEN_COUNT")), std::bind(&AutoConnect::_token_HIDDEN_COUNT, this, std::placeholders::_1));
   }
   else if (uri == String(AUTOCONNECT_URI_CONNECT)) {
 
     // Setup /auto/connect
     elm->setMold("{{REQ}}");
-    elm->addToken("REQ", std::bind(&AutoConnect::_induceConnect, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("REQ")), std::bind(&AutoConnect::_induceConnect, this, std::placeholders::_1));
   }
   else if (uri == String(AUTOCONNECT_URI_OPEN)) {
 
     // Setup /auto/open
     elm->setMold(_PAGE_OPENCREDT);
-    elm->addToken("HEAD", std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
-    elm->addToken("CSS_BASE", std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
-    elm->addToken("CSS_INPUT_BUTTON", std::bind(&AutoConnect::_token_CSS_INPUT_BUTTON, this, std::placeholders::_1));
-    elm->addToken("CSS_LUXBAR", std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
-    elm->addToken("MENU", std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
-    elm->addToken("OPEN_SSID", std::bind(&AutoConnect::_token_OPEN_SSID, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("HEAD")), std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_BASE")), std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_INPUT_BUTTON")), std::bind(&AutoConnect::_token_CSS_INPUT_BUTTON, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_LUXBAR")), std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("MENU")), std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("OPEN_SSID")), std::bind(&AutoConnect::_token_OPEN_SSID, this, std::placeholders::_1));
   }
   else if (uri == String(AUTOCONNECT_URI_DISCON)) {
 
     // Setup /auto/disc
     elm->setMold(_PAGE_DISCONN);
-    elm->addToken("DISCONNECT", std::bind(&AutoConnect::_induceDisconnect, this, std::placeholders::_1));
-    elm->addToken("HEAD", std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
-    elm->addToken("CSS_BASE", std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
-    elm->addToken("CSS_LUXBAR", std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
-    elm->addToken("MENU", std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("DISCONNECT")), std::bind(&AutoConnect::_induceDisconnect, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("HEAD")), std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_BASE")), std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_LUXBAR")), std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("MENU")), std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
   }
   else if (uri == String(AUTOCONNECT_URI_RESET)) {
 
     // Setup /auto/reset
     elm->setMold(_PAGE_RESETTING);
-    elm->addToken("HEAD", std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
-    elm->addToken("UPTIME", std::bind(&AutoConnect::_token_UPTIME, this, std::placeholders::_1));
-    elm->addToken("RESET", std::bind(&AutoConnect::_induceReset, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("HEAD")), std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("UPTIME")), std::bind(&AutoConnect::_token_UPTIME, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("RESET")), std::bind(&AutoConnect::_induceReset, this, std::placeholders::_1));
 
   }
   else if (uri == String(AUTOCONNECT_URI_RESULT)) {
 
     // Setup /auto/result
     elm->setMold("{{RESULT}}");
-    elm->addToken("RESULT", std::bind(&AutoConnect::_invokeResult, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("RESULT")), std::bind(&AutoConnect::_invokeResult, this, std::placeholders::_1));
   }
   else if (uri == String(AUTOCONNECT_URI_SUCCESS)) {
 
     // Setup /auto/success
     elm->setMold(_PAGE_SUCCESS);
-    elm->addToken("HEAD", std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
-    elm->addToken("CSS_BASE", std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
-    elm->addToken("CSS_TABLE", std::bind(&AutoConnect::_token_CSS_TABLE, this, std::placeholders::_1));
-    elm->addToken("CSS_LUXBAR", std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
-    elm->addToken("MENU", std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
-    elm->addToken("ESTAB_SSID", std::bind(&AutoConnect::_token_ESTAB_SSID, this, std::placeholders::_1));
-    elm->addToken("WIFI_MODE", std::bind(&AutoConnect::_token_WIFI_MODE, this, std::placeholders::_1));
-    elm->addToken("WIFI_STATUS", std::bind(&AutoConnect::_token_WIFI_STATUS, this, std::placeholders::_1));
-    elm->addToken("LOCAL_IP", std::bind(&AutoConnect::_token_LOCAL_IP, this, std::placeholders::_1));
-    elm->addToken("GATEWAY", std::bind(&AutoConnect::_token_GATEWAY, this, std::placeholders::_1));
-    elm->addToken("NETMASK", std::bind(&AutoConnect::_token_NETMASK, this, std::placeholders::_1));
-    elm->addToken("CHANNEL", std::bind(&AutoConnect::_token_CHANNEL, this, std::placeholders::_1));
-    elm->addToken("DBM", std::bind(&AutoConnect::_token_DBM, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("HEAD")), std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_BASE")), std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_TABLE")), std::bind(&AutoConnect::_token_CSS_TABLE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_LUXBAR")), std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("MENU")), std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("ESTAB_SSID")), std::bind(&AutoConnect::_token_ESTAB_SSID, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("WIFI_MODE")), std::bind(&AutoConnect::_token_WIFI_MODE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("WIFI_STATUS")), std::bind(&AutoConnect::_token_WIFI_STATUS, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("LOCAL_IP")), std::bind(&AutoConnect::_token_LOCAL_IP, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("GATEWAY")), std::bind(&AutoConnect::_token_GATEWAY, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("NETMASK")), std::bind(&AutoConnect::_token_NETMASK, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CHANNEL")), std::bind(&AutoConnect::_token_CHANNEL, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("DBM")), std::bind(&AutoConnect::_token_DBM, this, std::placeholders::_1));
   }
   else if (uri == String(AUTOCONNECT_URI_FAIL)) {
 
     // Setup /auto/fail
     elm->setMold(_PAGE_FAIL);
-    elm->addToken("HEAD", std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
-    elm->addToken("CSS_BASE", std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
-    elm->addToken("CSS_TABLE", std::bind(&AutoConnect::_token_CSS_TABLE, this, std::placeholders::_1));
-    elm->addToken("CSS_LUXBAR", std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
-    elm->addToken("MENU", std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
-    elm->addToken("STATION_STATUS", std::bind(&AutoConnect::_token_STATION_STATUS, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("HEAD")), std::bind(&AutoConnect::_token_HEAD, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_BASE")), std::bind(&AutoConnect::_token_CSS_BASE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_TABLE")), std::bind(&AutoConnect::_token_CSS_TABLE, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("CSS_LUXBAR")), std::bind(&AutoConnect::_token_CSS_LUXBAR, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("MENU")), std::bind(&AutoConnect::_token_MENU, this, std::placeholders::_1));
+    elm->addToken(String(FPSTR("STATION_STATUS")), std::bind(&AutoConnect::_token_STATION_STATUS, this, std::placeholders::_1));
   }
   else {
     delete elm;

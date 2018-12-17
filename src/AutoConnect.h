@@ -268,23 +268,23 @@ class AutoConnect {
   String        _menuTitle;
 
   /** PegeElements of AutoConnect site. */
-  static const char _CSS_BASE[];
-  static const char _CSS_UL[];
-  static const char _CSS_ICON_LOCK[];
-  static const char _CSS_INPUT_BUTTON[];
-  static const char _CSS_INPUT_TEXT[];
-  static const char _CSS_TABLE[];
-  static const char _CSS_LUXBAR[];
-  static const char _ELM_HTML_HEAD[];
-  static const char _ELM_MENU[];
-  static const char _PAGE_STAT[];
-  static const char _PAGE_CONFIGNEW[];
-  static const char _PAGE_OPENCREDT[];
-  static const char _PAGE_SUCCESS[];
-  static const char _PAGE_RESETTING[];
-  static const char _PAGE_DISCONN[];
-  static const char _PAGE_FAIL[];
-  static const char _PAGE_404[];
+  static const char _CSS_BASE[] PROGMEM;
+  static const char _CSS_UL[] PROGMEM;
+  static const char _CSS_ICON_LOCK[] PROGMEM;
+  static const char _CSS_INPUT_BUTTON[] PROGMEM;
+  static const char _CSS_INPUT_TEXT[] PROGMEM;
+  static const char _CSS_TABLE[] PROGMEM;
+  static const char _CSS_LUXBAR[] PROGMEM;
+  static const char _ELM_HTML_HEAD[] PROGMEM;
+  static const char _ELM_MENU[] PROGMEM;
+  static const char _PAGE_STAT[] PROGMEM;
+  static const char _PAGE_CONFIGNEW[] PROGMEM;
+  static const char _PAGE_OPENCREDT[] PROGMEM;
+  static const char _PAGE_SUCCESS[] PROGMEM;
+  static const char _PAGE_RESETTING[] PROGMEM;
+  static const char _PAGE_DISCONN[] PROGMEM;
+  static const char _PAGE_FAIL[] PROGMEM;
+  static const char _PAGE_404[] PROGMEM;
 
   /** Token handlers for PageBuilder */
   String _token_CSS_BASE(PageArgument& args);
