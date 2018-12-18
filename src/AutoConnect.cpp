@@ -323,6 +323,10 @@ void AutoConnect::handleRequest() {
     else {
       _currentHostIP = WiFi.softAPIP();
       _redirectURI = String(AUTOCONNECT_URI_FAIL);
+      _rsConnect = WiFi.status();
+      WiFi.disconnect();
+      while (WiFi.status() != WL_IDLE_STATUS)
+        yield();
     }
     _rfConnect = false;
   }

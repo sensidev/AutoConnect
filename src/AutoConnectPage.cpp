@@ -724,45 +724,45 @@ const char  AutoConnect::_PAGE_DISCONN[] PROGMEM = {
 };
 
 String AutoConnect::_token_CSS_BASE(PageArgument& args) {
-  return String(_CSS_BASE);
+  return String(FPSTR(_CSS_BASE));
 }
 
 String AutoConnect::_token_CSS_UL(PageArgument& args) {
-  return String(_CSS_UL);
+  return String(FPSTR(_CSS_UL));
 }
 
 String AutoConnect::_token_CSS_ICON_LOCK(PageArgument& args) {
-  return String(_CSS_ICON_LOCK);
+  return String(FPSTR(_CSS_ICON_LOCK));
 }
 String AutoConnect::_token_CSS_INPUT_BUTTON(PageArgument& args) {
-  return String(_CSS_INPUT_BUTTON);
+  return String(FPSTR(_CSS_INPUT_BUTTON));
 }
 
 String AutoConnect::_token_CSS_INPUT_TEXT(PageArgument& args) {
-  return String(_CSS_INPUT_TEXT);
+  return String(FPSTR(_CSS_INPUT_TEXT));
 }
 
 String AutoConnect::_token_CSS_TABLE(PageArgument& args) {
-  return String(_CSS_TABLE);
+  return String(FPSTR(_CSS_TABLE));
 }
 
 String AutoConnect::_token_HEAD(PageArgument& args) {
-  return String(_ELM_HTML_HEAD);
+  return String(FPSTR(_ELM_HTML_HEAD));
 }
 
 String AutoConnect::_token_MENU(PageArgument& args) {
-  String  currentMenu = String(_ELM_MENU);
-  currentMenu.replace(String("MENU_TITLE"), _menuTitle);
-  currentMenu.replace(String("HOME_URI"), _apConfig.homeUri);
+  String  currentMenu = FPSTR(_ELM_MENU);
+  currentMenu.replace(F("MENU_TITLE"), _menuTitle);
+  currentMenu.replace(F("HOME_URI"), _apConfig.homeUri);
   return currentMenu;
 }
 
 String AutoConnect::_token_CSS_LUXBAR(PageArgument& args) {
-  return String(_CSS_LUXBAR);
+  return String(FPSTR(_CSS_LUXBAR));
 }
 
 String AutoConnect::_token_ESTAB_SSID(PageArgument& args) {
-  return (WiFi.status() == WL_CONNECTED ? WiFi.SSID() : String("N/A"));
+  return (WiFi.status() == WL_CONNECTED ? WiFi.SSID() : String(F("N/A")));
 }
 
 String AutoConnect::_token_WIFI_MODE(PageArgument& args) {
@@ -798,7 +798,7 @@ String AutoConnect::_token_STATION_STATUS(PageArgument& args) {
     "CONNECT_FAIL",
     "GOT_IP"
   };
-  uint8_t st = wifi_station_get_connect_status();
+  uint8_t st = static_cast<uint8_t>(_rsConnect);
   switch (st) {
   case STATION_IDLE:
     wlStatusSymbol = wlStatusSymbols[0];
@@ -856,7 +856,7 @@ String AutoConnect::_token_CHANNEL(PageArgument& args) {
 
 String AutoConnect::_token_DBM(PageArgument& args) {
   int32_t dBm = WiFi.RSSI();
-  return (dBm == 31 ? String("N/A") : String(dBm));
+  return (dBm == 31 ? String(F("N/A")) : String(dBm));
 }
 
 String AutoConnect::_token_CPU_FREQ(PageArgument& args) {
@@ -911,7 +911,7 @@ String AutoConnect::_token_OPEN_SSID(PageArgument& args) {
       ssidList += String(AutoConnect::_toWiFiQuality(WiFi.RSSI())) + String("%");
     }
     else {
-      ssidList += String("N/A");
+      ssidList += String(F("N/A"));
 
     }
     ssidList += String(F("</label><br>"));

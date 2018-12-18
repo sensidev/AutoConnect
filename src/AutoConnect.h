@@ -261,6 +261,7 @@ class AutoConnect {
   bool  _rfConnect;       /**< URI /connect requested */
   bool  _rfDisconnect;    /**< URI /disc requested */
   bool  _rfReset;         /**< URI /reset requested */
+  wl_status_t   _rsConnect; /**< connection result */
 
   String        _uri;
   String        _redirectURI;
