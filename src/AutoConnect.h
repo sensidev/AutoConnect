@@ -2,8 +2,8 @@
  *	Declaration of AutoConnect class and accompanying AutoConnectConfig class.
  *	@file	AutoConnect.h
  *	@author	hieromon@gmail.com
- *	@version	0.9.5
- *	@date	2018-08-27
+ *	@version	0.9.6a
+ *	@date	2019-01-05
  *	@copyright	MIT license.
  */
 
@@ -77,7 +77,6 @@ using WebServerClass = WebServer;
 #ifndef AUTOCONNECT_MENU_TITLE
 #define AUTOCONNECT_MENU_TITLE  "AutoConnect"
 #endif
-#define AUTOCONNECT_MENU_TITLE_CONNETED  "Connected"
 
 #define AUTOCONNECT_URI_CONFIG  AUTOCONNECT_URI "/config"
 #define AUTOCONNECT_URI_CONNECT AUTOCONNECT_URI "/connect"
@@ -90,6 +89,11 @@ using WebServerClass = WebServer;
 
 #ifndef AUTOCONNECT_TIMEOUT
 #define AUTOCONNECT_TIMEOUT     30000
+#endif
+
+// For v0.9.6a - supports the captive portal timeout.
+#ifndef AUTOCONNECT_CAPTIVEPORTAL_TIMEOUT
+#define AUTOCONNECT_CAPTIVEPORTAL_TIMEOUT 0
 #endif
 
 #ifndef AUTOCONNECT_STARTUPTIME
@@ -131,6 +135,8 @@ class AutoConnectConfig {
     autoRise(true),
     autoReset(true),
     autoReconnect(false),
+    retainPortal(false),
+    portalTimeout(AUTOCONNECT_CAPTIVEPORTAL_TIMEOUT),
     homeUri(AUTOCONNECT_HOMEURI),
     staip(0U),
     staGateway(0U),
@@ -140,7 +146,7 @@ class AutoConnectConfig {
   /**
    *  Configure by SSID for the captive portal access point and password.
    */
-  AutoConnectConfig(const char* ap, const char* password) :
+  AutoConnectConfig(const char* ap, const char* password, const unsigned long potalTimeout = 0) :
     apip(AUTOCONNECT_AP_IP),
     gateway(AUTOCONNECT_AP_GW),
     netmask(AUTOCONNECT_AP_NM),
@@ -154,6 +160,8 @@ class AutoConnectConfig {
     autoRise(true),
     autoReset(true),
     autoReconnect(false),
+    retainPortal(false),
+    portalTimeout(potalTimeout),
     homeUri(AUTOCONNECT_HOMEURI),
     staip(0U),
     staGateway(0U),
@@ -177,6 +185,8 @@ class AutoConnectConfig {
     autoRise = o.autoRise;
     autoReset = o.autoReset;
     autoReconnect = o.autoReconnect;
+    retainPortal = o.retainPortal;
+    portalTimeout = o.portalTimeout;
     homeUri = o.homeUri;
     staip = o.staip;
     staGateway = o.staGateway;
@@ -199,6 +209,8 @@ class AutoConnectConfig {
   bool      autoRise;   /**< Automatic starting the captive portal */
   bool      autoReset;  /**< Reset ESP8266 module automatically when WLAN disconnected. */
   bool      autoReconnect;  /**< Automatic reconnect with past SSID */
+  bool      retainPortal;   /**< Even if the captive portal times out, it maintains the portal state. */
+  unsigned long portalTimeout;  /**< Timeout value for stay in the captive portal */
   String    homeUri;    /**< A URI of user site */
   IPAddress staip;      /**< Station static IP address */
   IPAddress staGateway; /**< Station gateway address */
@@ -240,6 +252,7 @@ class AutoConnect {
   bool  _loadAvailCredential();
   void  _stopPortal();
   bool  _classifyHandle(HTTPMethod mothod, String uri);
+  void  _purgePages(void);
   PageElement*  _setupPage(String uri);
 
   /** Request handlers implemented by Page Builder */
@@ -250,6 +263,7 @@ class AutoConnect {
 
   /** For portal control */
   bool  _captivePortal();
+  bool  _hasTimeout(unsigned long timeout);
   bool  _isIP(String ipStr);
   wl_status_t _waitForConnect(unsigned long timeout);
   void  _disconnectWiFi(bool wifiOff);
@@ -273,7 +287,8 @@ class AutoConnect {
   AutoConnectConfig     _apConfig;
   struct station_config _credential;
   uint8_t       _hiddenSSIDCount;
-  unsigned long _portalTimeout;
+  unsigned long _connectTimeout;
+  unsigned long _portalAccessPeriod;
 
   /** The control indicators */
   bool  _rfConnect;       /**< URI /connect requested */

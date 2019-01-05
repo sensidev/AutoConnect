@@ -2,8 +2,8 @@
  *  AutoConnect class implementation.
  *  @file   AutoConnect.cpp
  *  @author hieromon@gmail.com
- *  @version    0.9.6
- *  @date   2018-09-27
+ *  @version    0.9.6a
+ *  @date   2019-01-05
  *  @copyright  MIT license.
  */
 
@@ -49,7 +49,7 @@ void AutoConnect::_initialize() {
   _rfReset = false;
   _currentPageElement = nullptr;
   _menuTitle = String(AUTOCONNECT_MENU_TITLE);
-  _portalTimeout = AUTOCONNECT_TIMEOUT;
+  _connectTimeout = AUTOCONNECT_TIMEOUT;
   memset(&_credential, 0x00, sizeof(struct station_config));
 }
 
@@ -82,12 +82,15 @@ bool AutoConnect::begin() {
  */
 bool AutoConnect::begin(const char* ssid, const char* passphrase, unsigned long timeout) {
   bool  cs;
+  bool  hasTimeout;
 
   // Overwrite for the current timeout value.
-  _portalTimeout = timeout;
+  _connectTimeout = timeout;
 
   // Start WiFi connection with station mode.
+#if defined(ARDUINO_ARCH_ESP32)
   WiFi.softAPdisconnect(false);
+#endif
   WiFi.enableAP(false);
   delay(100);
   WiFi.mode(WIFI_STA);
@@ -116,7 +119,7 @@ bool AutoConnect::begin(const char* ssid, const char* passphrase, unsigned long 
   else
     WiFi.begin(ssid, passphrase);
   AC_DBG("WiFi.begin(%s%s%s)\n", ssid == nullptr ? "" : ssid, passphrase == nullptr ? "" : ",", passphrase == nullptr ? "" : passphrase);
-  cs = _waitForConnect(_portalTimeout) == WL_CONNECTED;
+  cs = _waitForConnect(_connectTimeout) == WL_CONNECTED;
 
   // Reconnect with a valid credential as the autoReconnect option is enabled.
   if (!cs && _apConfig.autoReconnect && (ssid == nullptr && passphrase == nullptr)) {
@@ -127,7 +130,7 @@ bool AutoConnect::begin(const char* ssid, const char* passphrase, unsigned long 
       const char* psk = strlen(reinterpret_cast<const char*>(_credential.password)) ? reinterpret_cast<const char*>(_credential.password) : nullptr;
       WiFi.begin(reinterpret_cast<const char*>(_credential.ssid), psk);
       AC_DBG("WiFi.begin(%s%s%s)\n", _credential.ssid, psk == nullptr ? "" : ",", psk == nullptr ? "" : psk);
-      cs = _waitForConnect(_portalTimeout) == WL_CONNECTED;
+      cs = _waitForConnect(_connectTimeout) == WL_CONNECTED;
     }
   }
   _currentHostIP = WiFi.localIP();
@@ -167,10 +170,18 @@ bool AutoConnect::begin(const char* ssid, const char* passphrase, unsigned long 
         _startDNSServer();
 
         // Start the captive portal to make a new connection
+        hasTimeout = false;
+        _portalAccessPeriod = millis();
         while (WiFi.status() != WL_CONNECTED && !_rfReset) {
           handleClient();
           // Force execution of queued processes.
           yield();
+          // Check timeout
+          if (_hasTimeout(_apConfig.portalTimeout)) {
+            hasTimeout = true;
+            AC_DBG("CP timeout exceeded:%ld\n", millis() - _portalAccessPeriod);
+            break;
+          }
         }
         cs = WiFi.status() == WL_CONNECTED;
 
@@ -178,6 +189,17 @@ bool AutoConnect::begin(const char* ssid, const char* passphrase, unsigned long 
         if (cs) {
           _dnsServer->stop();
           _dnsServer.reset();
+        }
+        // Captive portal styaing time exceeds timeout,
+        // Close the portal if an option for keeping the portal is false.
+        else if (hasTimeout) {
+          if (_apConfig.retainPortal) {
+            _purgePages();
+            AC_DBG("Maintain portal\n");
+          }
+          else {
+            _stopPortal();
+          }
         }
       }
     }
@@ -323,7 +345,7 @@ void AutoConnect::handleRequest() {
     // An attempt to establish a new AP.
     AC_DBG("Request for %s\n", (const char*)_credential.ssid);
     WiFi.begin((const char*)_credential.ssid, (const char*)_credential.password);
-    if (_waitForConnect(_portalTimeout) == WL_CONNECTED) {
+    if (_waitForConnect(_connectTimeout) == WL_CONNECTED) {
       if (WiFi.BSSID() != NULL) {
         memcpy(_credential.bssid, WiFi.BSSID(), sizeof(station_config::bssid));
         _currentHostIP = WiFi.localIP();
@@ -448,6 +470,32 @@ bool AutoConnect::_captivePortal() {
 }
 
 /**
+ *  Check whether the stay-time in the captive portal has a timeout.
+ */
+bool AutoConnect::_hasTimeout(unsigned long timeout) {
+  uint8_t staNum;
+
+  if (!_apConfig.portalTimeout)
+    return false;
+
+#if defined(ARDUINO_ARCH_ESP8266)
+  staNum = 0;
+  struct station_info* station = wifi_softap_get_station_info();
+  while (station) {
+    staNum++;
+    station = STAILQ_NEXT(station, next);
+  }
+  wifi_softap_free_station_info();
+#elif defined(ARDUINO_ARCH_ESP32)
+  staNum = WiFi.softAPgetStationNum();
+#endif
+  if (staNum)
+    _portalAccessPeriod = millis();
+
+  return (millis() - _portalAccessPeriod > timeout) ? true : false;
+}
+
+/**
  *  A handler that redirects access to the captive portal to the connection
  *  configuration page.
  */
@@ -552,16 +600,14 @@ String AutoConnect::_invokeResult(PageArgument& args) {
  *  a part of the handling of http request originated from handleClient.
  */
 bool AutoConnect::_classifyHandle(HTTPMethod method, String uri) {
+  _portalAccessPeriod = millis();
   AC_DBG("%s%s\n", _webServer->hostHeader().c_str(), uri.c_str());
   if (uri == _uri) {
     return true;  // The response page already exists.
   }
 
   // Dispose decrepit page
-  _responsePage->clearElement();
-  if (_currentPageElement != nullptr)
-    delete _currentPageElement;
-  _uri = String();
+  _purgePages();
 
   // Create the page dynamically
   if ((_currentPageElement = _setupPage(uri)) != nullptr) {
@@ -572,6 +618,18 @@ bool AutoConnect::_classifyHandle(HTTPMethod method, String uri) {
   AC_DBG("Page[%s] allocated\n", _responsePage->uri());
 
   return _currentPageElement != nullptr ? true : false;
+}
+
+/**
+ *  Purge allocated pages. 
+ */
+void AutoConnect::_purgePages() {
+  _responsePage->clearElement();
+  if (_currentPageElement != nullptr) {
+    delete _currentPageElement;
+    _currentPageElement = nullptr;
+  }
+  _uri = String("");
 }
 
 /**

@@ -81,6 +81,9 @@ Full documentation is available on https://Hieromon.github.io/AutoConnect, some 
 
 ## Change log
 
+### [0.9.6a] Jan. 5, 2019
+- Supports the captive portal timeout.
+
 ### [0.9.6] Sep. 27, 2018
 - Improvement of RSSI detection for saved SSIDs.
 - Fixed disconnection SoftAP completely at the first connection phase of the AutoConnect::begin.
