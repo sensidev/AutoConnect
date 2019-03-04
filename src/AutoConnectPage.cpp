@@ -472,6 +472,7 @@ const char  AutoConnect::_ELM_MENU[]  PROGMEM = {
 
 /**< The 404 page content. */
 const char  AutoConnect::_PAGE_404[] PROGMEM = {
+  "{{AUTH}}"
   "{{HEAD}}"
   "<title>Page not found</title>"
   "</head>"
@@ -483,6 +484,7 @@ const char  AutoConnect::_PAGE_404[] PROGMEM = {
 
 /**< The page that started the reset. */
 const char  AutoConnect::_PAGE_RESETTING[] PROGMEM = {
+  "{{AUTH}}"
   "{{HEAD}}"
   "<meta http-equiv=\"refresh\" content=\"{{UPTIME}};URL=" AUTOCONNECT_URI "\">"
   "<title>AutoConnect resetting</title>"
@@ -495,6 +497,7 @@ const char  AutoConnect::_PAGE_RESETTING[] PROGMEM = {
 
 /**< AutoConnect portal page. */
 const char  AutoConnect::_PAGE_STAT[] PROGMEM = {
+  "{{AUTH}}"
   "{{HEAD}}"
   "<title>AutoConnect statistics</title>"
   "<style type=\"text/css\">"
@@ -575,6 +578,7 @@ const char  AutoConnect::_PAGE_STAT[] PROGMEM = {
 
 /**< A page that specifies the new configuration. */
 const char  AutoConnect::_PAGE_CONFIGNEW[] PROGMEM = {
+  "{{AUTH}}"
   "{{HEAD}}"
   "<title>AutoConnect config</title>"
   "<style type=\"text/css\">"
@@ -613,6 +617,7 @@ const char  AutoConnect::_PAGE_CONFIGNEW[] PROGMEM = {
 
 /**< A page that reads stored authentication information and starts connection. */
 const char  AutoConnect::_PAGE_OPENCREDT[] PROGMEM = {
+  "{{AUTH}}"
   "{{HEAD}}"
   "<title>AutoConnect credentials</title>"
   "<style type=\"text/css\">"
@@ -637,6 +642,7 @@ const char  AutoConnect::_PAGE_OPENCREDT[] PROGMEM = {
 
 /**< A page announcing that a connection has been established. */
 const char  AutoConnect::_PAGE_SUCCESS[] PROGMEM = {
+  "{{AUTH}}"
   "{{HEAD}}"
   "<title>AutoConnect statistics</title>"
   "<style type=\"text/css\">"
@@ -687,6 +693,7 @@ const char  AutoConnect::_PAGE_SUCCESS[] PROGMEM = {
 };
  /**< A response page for connection failed. */
 const char  AutoConnect::_PAGE_FAIL[] PROGMEM = {
+  "{{AUTH}}"
   "{{HEAD}}"
   "<title>AutoConnect statistics</title>"
   "<style type=\"text/css\">"
@@ -715,6 +722,7 @@ const char  AutoConnect::_PAGE_FAIL[] PROGMEM = {
 
 /**< A response page for disconnected from the AP. */
 const char  AutoConnect::_PAGE_DISCONN[] PROGMEM = {
+  "{{AUTH}}"
   "{{DISCONNECT}}"
   "{{HEAD}}"
   "<title>AutoConnect disconnected</title>"
