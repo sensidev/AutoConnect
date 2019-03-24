@@ -32,7 +32,9 @@ using WebServerClass = WebServer;
 #include "AutoConnectCredential.h"
 
 // Uncomment the following AC_DEBUG to enable debug output.
-#define AC_DEBUG
+// #define AC_DEBUG
+
+#ifndef AC_DEBUG_CUSTOM
 
 // Debug output destination can be defined externally with AC_DEBUG_PORT
 #ifndef AC_DEBUG_PORT
@@ -42,6 +44,10 @@ using WebServerClass = WebServer;
 #define AC_DBG(...) do {AC_DEBUG_PORT.print("[AC] "); AC_DEBUG_PORT.printf( __VA_ARGS__ );} while (0)
 #else
 #define AC_DBG(...)
+#endif
+
+#else
+#include "Logger.h"
 #endif
 
 #ifndef AUTOCONNECT_APID
